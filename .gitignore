@@ -1,0 +1,33 @@
+# Database — never commit production data
+leadflow.db
+leadflow.db-shm
+leadflow.db-wal
+
+# Scratch / import files
+_test_script.js
+erp-research-data.json
+leads-data.json
+research-data.json
+research.json
+settings.json
+users.json
+Session_Documentation.md
+redhawk_temp.zip
+redhawk_extracted/
+linkedin_export/
+import_connections.js
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Environment / secrets
+.env
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code session files
+.claude/
