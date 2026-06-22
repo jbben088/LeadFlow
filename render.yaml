@@ -1,0 +1,26 @@
+# Render Blueprint for LeadFlow.
+# Create the service via Render Dashboard → New → Blueprint → pick this repo.
+#
+# Notes:
+#  - "starter" is a paid, always-on plan. It is required (not Free) because the
+#    nightly research/export jobs run inside the process and a sleeping instance
+#    would silently skip them. A persistent disk also requires a paid plan.
+#  - DATA_DIR points the SQLite database and CSV exports at the mounted disk so
+#    they survive redeploys.
+services:
+  - type: web
+    name: leadflow
+    runtime: node
+    plan: starter
+    region: oregon
+    buildCommand: npm install
+    startCommand: node --experimental-sqlite server.js
+    healthCheckPath: /
+    autoDeploy: true
+    envVars:
+      - key: DATA_DIR
+        value: /var/data
+    disk:
+      name: leadflow-data
+      mountPath: /var/data
+      sizeGB: 1

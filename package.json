@@ -1,0 +1,13 @@
+{
+  "name": "leadflow",
+  "version": "1.0.0",
+  "description": "LeadFlow — Redhawk BD Intelligence Platform",
+  "private": true,
+  "main": "server.js",
+  "scripts": {
+    "start": "node --experimental-sqlite server.js"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

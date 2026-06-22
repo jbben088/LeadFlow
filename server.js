@@ -7,9 +7,15 @@ const { spawn } = require('child_process');
 
 const PORT = process.env.PORT || 3031;
 
+// Persistent data directory. Defaults to the app folder for local dev; on a
+// hosted platform set DATA_DIR to a mounted persistent disk so the SQLite
+// database and exports survive redeploys.
+const DATA_DIR = process.env.DATA_DIR || __dirname;
+try { fs.mkdirSync(DATA_DIR, { recursive: true }); } catch {}
+
 // ── SQLite (built into Node.js 22+, no npm install needed) ────────────────────
 const { DatabaseSync } = require('node:sqlite');
-const db = new DatabaseSync(path.join(__dirname, 'leadflow.db'));
+const db = new DatabaseSync(path.join(DATA_DIR, 'leadflow.db'));
 
 db.exec(`
   PRAGMA journal_mode = WAL;
@@ -545,7 +551,7 @@ function runExport() {
   const changed  = all.filter(l => (l.updatedAt||l.createdAt||'') > since);
   if (!changed.length) { console.log(`[export] No changes since ${since.slice(0,10)}`); return null; }
   const dateStr  = new Date().toISOString().slice(0,10);
-  const outPath  = path.join(__dirname, `pipedrive-export-${dateStr}.csv`);
+  const outPath  = path.join(DATA_DIR, `pipedrive-export-${dateStr}.csv`);
   fs.writeFileSync(outPath, toCsv(changed), 'utf8');
   settings.lastExportedAt = new Date().toISOString();
   saveSettings(settings);
