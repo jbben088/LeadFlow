@@ -20,6 +20,10 @@ services:
     envVars:
       - key: DATA_DIR
         value: /var/data
+      # Render runs in UTC; the nightly jobs schedule "2 AM local", so set the
+      # process timezone to make 2 AM mean 2 AM US Eastern.
+      - key: TZ
+        value: America/New_York
     disk:
       name: leadflow-data
       mountPath: /var/data
